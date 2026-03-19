@@ -1,0 +1,57 @@
+############################################
+### LOCALHOST TESTS
+############################################
+
+### Get all contacts locally
+GET http://localhost:8080/contacts
+
+###
+
+### Get a single contact locally
+GET http://localhost:8080/contacts/69ac531ad1555fcb288db461
+
+###
+
+### Create a new contact locally
+POST http://localhost:8080/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Samuel",
+  "lastName": "Pelley",
+  "email": "samuel@example.com",
+  "favoriteColor": "Blue",
+  "birthday": "1995-05-15"
+}
+
+###
+
+### Update a contact locally
+PUT http://localhost:8080/contacts/69b56a5472119bacce18bb4f
+Content-Type: application/json
+
+{
+  "firstName": "Samuel",
+  "lastName": "Pelley",
+  "email": "samuelpelley@example.com",
+  "favoriteColor": "Black",
+  "birthday": "1995-05-15"
+}
+
+###
+
+### Delete a contact locally
+DELETE http://localhost:8080/contacts/69b56a5472119bacce18bb4f
+
+
+############################################
+### DEPLOYED RENDER API
+############################################
+
+### Get all contacts (Render)
+GET https://cse341-project1-fd9o.onrender.com/contacts
+
+###
+
+### Get single contact (Render)
+GET https://cse341-project1-fd9o.onrender.com/contacts/69ac531ad1555fcb288db461
