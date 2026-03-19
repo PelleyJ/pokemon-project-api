@@ -7,7 +7,8 @@ const getAllPokemon = async (req, res) => {
     const pokemon = await db.collection("pokemon").find().toArray();
     res.status(200).json(pokemon);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving pokemon" });
+    console.error("GET ALL POKEMON ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -23,7 +24,8 @@ const getSinglePokemon = async (req, res) => {
 
     res.status(200).json(pokemon);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving pokemon" });
+    console.error("GET SINGLE POKEMON ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -72,7 +74,8 @@ const createPokemon = async (req, res) => {
 
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ message: "Error creating pokemon" });
+    console.error("CREATE POKEMON ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -129,7 +132,8 @@ const updatePokemon = async (req, res) => {
 
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: "Error updating pokemon" });
+    console.error("UPDATE POKEMON ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -146,7 +150,8 @@ const deletePokemon = async (req, res) => {
 
     res.status(200).json({ message: "Pokemon deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting pokemon" });
+    console.error("DELETE POKEMON ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
