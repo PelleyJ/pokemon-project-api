@@ -43,6 +43,23 @@ Content-Type: application/json
 ### Delete a contact locally
 DELETE http://localhost:8080/contacts/69b56a5472119bacce18bb4f
 
+###
+
+############################################
+### USER AUTH (LOCALHOST)
+############################################
+
+### Register new user
+POST http://localhost:8080/users/register
+Content-Type: application/json
+
+{
+  "username": "ash",
+  "email": "ash@pokemon.com",
+  "password": "pikachu123"
+}
+
+###
 
 ############################################
 ### DEPLOYED RENDER API
@@ -55,3 +72,94 @@ GET https://cse341-project1-fd9o.onrender.com/contacts
 
 ### Get single contact (Render)
 GET https://cse341-project1-fd9o.onrender.com/contacts/69ac531ad1555fcb288db461
+
+###
+
+############################################
+### USER AUTH (RENDER)
+############################################
+
+### Register new user (Render)
+POST https://cse341-project1-fd9o.onrender.com/users/register
+Content-Type: application/json
+
+{
+  "username": "ash",
+  "email": "ash@pokemon.com",
+  "password": "pikachu123"
+}
+
+### Login user
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
+  "email": "ash@pokemon.com",
+  "password": "pikachu123"
+}
+
+### Get all pokemon (PROTECTED)
+GET http://localhost:8080/pokemon
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWM2YTAzODcyYmY3ZjYyNTQwMzhiZmMiLCJlbWFpbCI6ImFzaEBwb2tlbW9uLmNvbSIsImlhdCI6MTc3NDY5OTQwMiwiZXhwIjoxNzc0NzAzMDAyfQ.QONYJ_5wv-D1wDtlSW8NIcTEyN8sso8yIIXROhq4XtE
+
+############################################
+### TRAINERS (LOCALHOST - PROTECTED)
+############################################
+
+### Get all trainers (with token)
+GET http://localhost:8080/trainers
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWM2YTAzODcyYmY3ZjYyNTQwMzhiZmMiLCJlbWFpbCI6ImFzaEBwb2tlbW9uLmNvbSIsImlhdCI6MTc3NDcwNjYyNSwiZXhwIjoxNzc0NzEwMjI1fQ.-f6N3VJX9hEVa39W5MIsFcGViWmya0_Qyboa6zyQV0I
+############################################
+
+###
+
+### Get all trainers (without token)
+GET http://localhost:8080/trainers
+
+###
+
+### Get single trainer by ID (with token)
+GET http://localhost:8080/trainers/PASTE_TRAINER_ID_HERE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWM2YTAzODcyYmY3ZjYyNTQwMzhiZmMiLCJlbWFpbCI6ImFzaEBwb2tlbW9uLmNvbSIsImlhdCI6MTc3NDcwNjYyNSwiZXhwIjoxNzc0NzEwMjI1fQ.-f6N3VJX9hEVa39W5MIsFcGViWmya0_Qyboa6zyQV0I
+############################################
+
+###
+
+### Create trainer (with token)
+POST http://localhost:8080/trainers
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWM2YTAzODcyYmY3ZjYyNTQwMzhiZmMiLCJlbWFpbCI6ImFzaEBwb2tlbW9uLmNvbSIsImlhdCI6MTc3NDcwNjYyNSwiZXhwIjoxNzc0NzEwMjI1fQ.-f6N3VJX9hEVa39W5MIsFcGViWmya0_Qyboa6zyQV0I
+############################################
+
+{
+  "name": "Ash Ketchum",
+  "age": 10,
+  "region": "Kanto",
+  "badgeCount": 8,
+  "favoriteType": "Electric"
+}
+
+###
+
+### Update trainer (with token)
+PUT http://localhost:8080/trainers/PASTE_TRAINER_ID_HERE
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWM2YTAzODcyYmY3ZjYyNTQwMzhiZmMiLCJlbWFpbCI6ImFzaEBwb2tlbW9uLmNvbSIsImlhdCI6MTc3NDcwNjYyNSwiZXhwIjoxNzc0NzEwMjI1fQ.-f6N3VJX9hEVa39W5MIsFcGViWmya0_Qyboa6zyQV0I
+
+############################################
+
+{
+  "name": "Ash Ketchum",
+  "age": 11,
+  "region": "Kanto",
+  "badgeCount": 8,
+  "favoriteType": "Electric"
+}
+
+###
+
+### Delete trainer (with token)
+DELETE http://localhost:8080/trainers/PASTE_TRAINER_ID_HERE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWM2YTAzODcyYmY3ZjYyNTQwMzhiZmMiLCJlbWFpbCI6ImFzaEBwb2tlbW9uLmNvbSIsImlhdCI6MTc3NDcwNjYyNSwiZXhwIjoxNzc0NzEwMjI1fQ.-f6N3VJX9hEVa39W5MIsFcGViWmya0_Qyboa6zyQV0I
+
+############################################

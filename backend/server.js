@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const pokemonRoutes = require("./routes/pokemon");
 const trainerRoutes = require("./routes/trainer");
+const userRoutes = require("./routes/user");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -25,7 +26,16 @@ const swaggerOptions = {
       {
         url: process.env.RENDER_EXTERNAL_URL || `http://localhost:${port}`
       }
-    ]
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT"
+        }
+      }
+    }
   },
   apis: ["./routes/*.js"]
 };
@@ -35,6 +45,7 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/pokemon", pokemonRoutes);
 app.use("/trainers", trainerRoutes);
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Pokemon API is running");
@@ -44,7 +55,7 @@ app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
     return res.status(400).json({ message: "Invalid JSON format." });
   }
-  next();
+  next(err);
 });
 
 app.listen(port, () => {

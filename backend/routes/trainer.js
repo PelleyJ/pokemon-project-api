@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const trainerController = require("../controllers/trainerController");
+const verifyToken = require("../middleware/auth");
 
 /**
  * @swagger
@@ -8,11 +9,15 @@ const trainerController = require("../controllers/trainerController");
  *   get:
  *     summary: Get all trainers
  *     description: Retrieve a list of all trainers
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: A list of trainers
+ *       401:
+ *         description: Unauthorized
  */
-router.get("/", trainerController.getAllTrainers);
+router.get("/", verifyToken, trainerController.getAllTrainers);
 
 /**
  * @swagger
@@ -20,6 +25,8 @@ router.get("/", trainerController.getAllTrainers);
  *   get:
  *     summary: Get a single trainer by ID
  *     description: Retrieve one trainer using its MongoDB ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -29,10 +36,12 @@ router.get("/", trainerController.getAllTrainers);
  *     responses:
  *       200:
  *         description: A single trainer
+ *       401:
+ *         description: Unauthorized
  *       404:
  *         description: Trainer not found
  */
-router.get("/:id", trainerController.getSingleTrainer);
+router.get("/:id", verifyToken, trainerController.getSingleTrainer);
 
 /**
  * @swagger
@@ -40,6 +49,8 @@ router.get("/:id", trainerController.getSingleTrainer);
  *   post:
  *     summary: Create a new trainer
  *     description: Add a new trainer to the database
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -66,8 +77,10 @@ router.get("/:id", trainerController.getSingleTrainer);
  *     responses:
  *       201:
  *         description: Trainer created successfully
+ *       401:
+ *         description: Unauthorized
  */
-router.post("/", trainerController.createTrainer);
+router.post("/", verifyToken, trainerController.createTrainer);
 
 /**
  * @swagger
@@ -75,6 +88,8 @@ router.post("/", trainerController.createTrainer);
  *   put:
  *     summary: Update a trainer by ID
  *     description: Replace an existing trainer using its MongoDB ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -107,10 +122,12 @@ router.post("/", trainerController.createTrainer);
  *     responses:
  *       204:
  *         description: Trainer updated successfully
+ *       401:
+ *         description: Unauthorized
  *       404:
  *         description: Trainer not found
  */
-router.put("/:id", trainerController.updateTrainer);
+router.put("/:id", verifyToken, trainerController.updateTrainer);
 
 /**
  * @swagger
@@ -118,6 +135,8 @@ router.put("/:id", trainerController.updateTrainer);
  *   delete:
  *     summary: Delete a trainer by ID
  *     description: Remove a trainer from the database using its MongoDB ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -127,9 +146,11 @@ router.put("/:id", trainerController.updateTrainer);
  *     responses:
  *       200:
  *         description: Trainer deleted successfully
+ *       401:
+ *         description: Unauthorized
  *       404:
  *         description: Trainer not found
  */
-router.delete("/:id", trainerController.deleteTrainer);
+router.delete("/:id", verifyToken, trainerController.deleteTrainer);
 
 module.exports = router;
