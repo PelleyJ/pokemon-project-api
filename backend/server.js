@@ -1,18 +1,38 @@
 const express = require("express");
 const cors = require("cors");
+const session = require("express-session");
+const passport = require("passport");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 require("dotenv").config();
 
 const pokemonRoutes = require("./routes/pokemon");
 const trainerRoutes = require("./routes/trainer");
-const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/user");
+require("./config/passport");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false
+    }
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 const swaggerOptions = {
   definition: {
@@ -26,16 +46,7 @@ const swaggerOptions = {
       {
         url: process.env.RENDER_EXTERNAL_URL || `http://localhost:${port}`
       }
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT"
-        }
-      }
-    }
+    ]
   },
   apis: ["./routes/*.js"]
 };
@@ -45,7 +56,7 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/pokemon", pokemonRoutes);
 app.use("/trainers", trainerRoutes);
-app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Pokemon API is running");
