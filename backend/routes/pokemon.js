@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const pokemonController = require("../controllers/pokemonController");
-const isAuthenticated = require("../middleware/oauthAuth");
 
 /**
  * @swagger
@@ -12,10 +11,8 @@ const isAuthenticated = require("../middleware/oauthAuth");
  *     responses:
  *       200:
  *         description: A list of pokemon
- *       401:
- *         description: Unauthorized
  */
-router.get("/", isAuthenticated, pokemonController.getAllPokemon);
+router.get("/", pokemonController.getAllPokemon);
 
 /**
  * @swagger
@@ -32,12 +29,12 @@ router.get("/", isAuthenticated, pokemonController.getAllPokemon);
  *     responses:
  *       200:
  *         description: A single pokemon
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid ID
  *       404:
  *         description: Pokemon not found
  */
-router.get("/:id", isAuthenticated, pokemonController.getSinglePokemon);
+router.get("/:id", pokemonController.getSinglePokemon);
 
 /**
  * @swagger
@@ -83,10 +80,10 @@ router.get("/:id", isAuthenticated, pokemonController.getSinglePokemon);
  *     responses:
  *       201:
  *         description: Pokemon created successfully
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Missing required fields
  */
-router.post("/", isAuthenticated, pokemonController.createPokemon);
+router.post("/", pokemonController.createPokemon);
 
 /**
  * @swagger
@@ -136,14 +133,14 @@ router.post("/", isAuthenticated, pokemonController.createPokemon);
  *               region:
  *                 type: string
  *     responses:
- *       204:
+ *       200:
  *         description: Pokemon updated successfully
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid ID or missing fields
  *       404:
  *         description: Pokemon not found
  */
-router.put("/:id", isAuthenticated, pokemonController.updatePokemon);
+router.put("/:id", pokemonController.updatePokemon);
 
 /**
  * @swagger
@@ -160,11 +157,11 @@ router.put("/:id", isAuthenticated, pokemonController.updatePokemon);
  *     responses:
  *       200:
  *         description: Pokemon deleted successfully
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid ID
  *       404:
  *         description: Pokemon not found
  */
-router.delete("/:id", isAuthenticated, pokemonController.deletePokemon);
+router.delete("/:id", pokemonController.deletePokemon);
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const trainerController = require("../controllers/trainerController");
-const isAuthenticated = require("../middleware/oauthAuth");
 
 /**
  * @swagger
@@ -12,10 +11,8 @@ const isAuthenticated = require("../middleware/oauthAuth");
  *     responses:
  *       200:
  *         description: A list of trainers
- *       401:
- *         description: Unauthorized
  */
-router.get("/", isAuthenticated, trainerController.getAllTrainers);
+router.get("/", trainerController.getAllTrainers);
 
 /**
  * @swagger
@@ -32,12 +29,12 @@ router.get("/", isAuthenticated, trainerController.getAllTrainers);
  *     responses:
  *       200:
  *         description: A single trainer
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid ID
  *       404:
  *         description: Trainer not found
  */
-router.get("/:id", isAuthenticated, trainerController.getSingleTrainer);
+router.get("/:id", trainerController.getSingleTrainer);
 
 /**
  * @swagger
@@ -71,10 +68,10 @@ router.get("/:id", isAuthenticated, trainerController.getSingleTrainer);
  *     responses:
  *       201:
  *         description: Trainer created successfully
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Missing required fields
  */
-router.post("/", isAuthenticated, trainerController.createTrainer);
+router.post("/", trainerController.createTrainer);
 
 /**
  * @swagger
@@ -112,14 +109,14 @@ router.post("/", isAuthenticated, trainerController.createTrainer);
  *               favoriteType:
  *                 type: string
  *     responses:
- *       204:
+ *       200:
  *         description: Trainer updated successfully
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid ID or missing fields
  *       404:
  *         description: Trainer not found
  */
-router.put("/:id", isAuthenticated, trainerController.updateTrainer);
+router.put("/:id", trainerController.updateTrainer);
 
 /**
  * @swagger
@@ -136,11 +133,11 @@ router.put("/:id", isAuthenticated, trainerController.updateTrainer);
  *     responses:
  *       200:
  *         description: Trainer deleted successfully
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid ID
  *       404:
  *         description: Trainer not found
  */
-router.delete("/:id", isAuthenticated, trainerController.deleteTrainer);
+router.delete("/:id", trainerController.deleteTrainer);
 
 module.exports = router;

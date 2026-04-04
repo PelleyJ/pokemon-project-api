@@ -7,12 +7,17 @@ const getAllTrainers = async (req, res) => {
     const trainers = await db.collection("trainers").find().toArray();
     res.status(200).json(trainers);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving trainers" });
+    console.error("GET ALL TRAINERS ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
 const getSingleTrainer = async (req, res) => {
   try {
+    if (!mongodb.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Trainer ID" });
+    }
+
     const trainerId = new mongodb.ObjectId(req.params.id);
     const db = await connectToDatabase();
     const trainer = await db.collection("trainers").findOne({ _id: trainerId });
@@ -23,7 +28,8 @@ const getSingleTrainer = async (req, res) => {
 
     res.status(200).json(trainer);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving trainer" });
+    console.error("GET SINGLE TRAINER ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -52,14 +58,22 @@ const createTrainer = async (req, res) => {
     const db = await connectToDatabase();
     const result = await db.collection("trainers").insertOne(trainer);
 
-    res.status(201).json(result);
+    res.status(201).json({
+      message: "Trainer created successfully",
+      id: result.insertedId
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error creating trainer" });
+    console.error("CREATE TRAINER ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
 const updateTrainer = async (req, res) => {
   try {
+    if (!mongodb.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Trainer ID" });
+    }
+
     const trainerId = new mongodb.ObjectId(req.params.id);
     const { name, age, region, badgeCount, favoriteType } = req.body;
 
@@ -90,14 +104,19 @@ const updateTrainer = async (req, res) => {
       return res.status(404).json({ message: "Trainer not found" });
     }
 
-    res.status(204).send();
+    res.status(200).json({ message: "Trainer updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error updating trainer" });
+    console.error("UPDATE TRAINER ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
 const deleteTrainer = async (req, res) => {
   try {
+    if (!mongodb.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Trainer ID" });
+    }
+
     const trainerId = new mongodb.ObjectId(req.params.id);
     const db = await connectToDatabase();
 
@@ -109,7 +128,8 @@ const deleteTrainer = async (req, res) => {
 
     res.status(200).json({ message: "Trainer deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting trainer" });
+    console.error("DELETE TRAINER ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 

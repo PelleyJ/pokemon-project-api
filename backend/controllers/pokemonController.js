@@ -14,6 +14,10 @@ const getAllPokemon = async (req, res) => {
 
 const getSinglePokemon = async (req, res) => {
   try {
+    if (!mongodb.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Pokemon ID" });
+    }
+
     const pokemonId = new mongodb.ObjectId(req.params.id);
     const db = await connectToDatabase();
     const pokemon = await db.collection("pokemon").findOne({ _id: pokemonId });
@@ -72,7 +76,10 @@ const createPokemon = async (req, res) => {
     const db = await connectToDatabase();
     const result = await db.collection("pokemon").insertOne(pokemon);
 
-    res.status(201).json(result);
+    res.status(201).json({
+      message: "Pokemon created successfully",
+      id: result.insertedId
+    });
   } catch (error) {
     console.error("CREATE POKEMON ERROR:", error);
     res.status(500).json({ message: error.message });
@@ -81,6 +88,10 @@ const createPokemon = async (req, res) => {
 
 const updatePokemon = async (req, res) => {
   try {
+    if (!mongodb.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Pokemon ID" });
+    }
+
     const pokemonId = new mongodb.ObjectId(req.params.id);
 
     const {
@@ -130,7 +141,7 @@ const updatePokemon = async (req, res) => {
       return res.status(404).json({ message: "Pokemon not found" });
     }
 
-    res.status(204).send();
+    res.status(200).json({ message: "Pokemon updated successfully" });
   } catch (error) {
     console.error("UPDATE POKEMON ERROR:", error);
     res.status(500).json({ message: error.message });
@@ -139,6 +150,10 @@ const updatePokemon = async (req, res) => {
 
 const deletePokemon = async (req, res) => {
   try {
+    if (!mongodb.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid Pokemon ID" });
+    }
+
     const pokemonId = new mongodb.ObjectId(req.params.id);
     const db = await connectToDatabase();
 
