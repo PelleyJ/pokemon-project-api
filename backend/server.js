@@ -8,16 +8,21 @@ require("dotenv").config();
 
 const pokemonRoutes = require("./routes/pokemon");
 const trainerRoutes = require("./routes/trainer");
+const gymRoutes = require("./routes/gym");
+const itemRoutes = require("./routes/item");
 const authRoutes = require("./routes/user");
 require("./config/passport");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
+
 app.use(express.json());
 
 app.use(
@@ -56,6 +61,8 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/pokemon", pokemonRoutes);
 app.use("/trainers", trainerRoutes);
+app.use("/gyms", gymRoutes);
+app.use("/items", itemRoutes);
 app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
@@ -69,6 +76,10 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+module.exports = app;
